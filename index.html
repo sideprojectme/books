@@ -1,0 +1,196 @@
+---
+layout: default
+---
+<nav class="pills">
+<ul>
+<li>Sort by: </li>
+<li class="by-category"><a href="#by-time">Date</a></li>
+<li class="by-date active"><a href="#by-date">Rating</a></li>
+<li class="by-title"><a href="#by-title">Title</a></li>
+</ul>
+
+</nav>
+
+<div class="by-date archive">
+
+{% assign sorted_pages = (site.posts | sort: 'rating') %}
+{% for post in sorted_pages reversed %}
+<div class="post-index">
+    <div class="post-image">
+        <a href="{{ site.baseurl }}{{ post.url }}">
+            {% if post.book-cover %}
+              <img src="{{ site.baseurl }}/img/{{post.book-cover}}" alt="{{post.title}}">
+            {% else %}
+              <img src="{{ site.baseurl }}/img/no-book-cover.png" alt="{{post.title}}">
+            {% endif %}
+        </a>
+    </div>
+    <div class="post-content">
+        <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+        <p>
+            {% if post.summary %}
+                <span class="excerpt">{{ post.summary }}</span>
+            {% else %}
+                <span class="excerpt">{{ post.excerpt | strip_html | truncatewords: 20}}</span>
+            {% endif %}
+        </p>
+        <p class="post-detail">
+            {{ post.date | date: site.date_format }}
+            {% if site.disqus_shortname %}
+              &middot;
+              <a href="{{ site.baseurl }}{{ post.url }}index.html#disqus_thread" data-disqus-identifier="{{ post.url }}"></a>
+              {% if post.update_date %}
+                &middot;
+                Updated {{ post.update_date | date: site.date_format }}
+              {% endif %}
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+
+<div class="by-title hide archive">
+{% assign sorted_pages = (site.posts | sort: 'title') %}
+{% for post in sorted_pages %}
+<div class="post-index">
+    <div class="post-image">
+        <a href="{{ site.baseurl }}{{ post.url }}">
+            {% if post.book-cover %}
+              <img src="{{ site.baseurl }}/img/{{post.book-cover}}" alt="{{post.title}}">
+            {% else %}
+              <img src="{{ site.baseurl }}/img/no-book-cover.png" alt="{{post.title}}">
+            {% endif %}
+        </a>
+    </div>
+    <div class="post-content">
+        <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+        <p>
+            {% if post.summary %}
+                <span class="excerpt">{{ post.summary }}</span>
+            {% else %}
+                <span class="excerpt">{{ post.excerpt | strip_html | truncatewords: 20}}</span>
+            {% endif %}
+        </p>
+        <p class="post-detail">
+            {{ post.date | date: site.date_format }}
+            {% if site.disqus_shortname %}
+              &middot;
+              <a href="{{ site.baseurl }}{{ post.url }}index.html#disqus_thread" data-disqus-identifier="{{ post.url }}"></a>
+              {% if post.update_date %}
+                &middot;
+                Updated {{ post.update_date | date: site.date_format }}
+              {% endif %}
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+<div class="by-time hide archive">
+    {% for post in site.posts %}
+<div class="post-index">
+    <div class="post-image">
+        <a href="{{ site.baseurl }}{{ post.url }}">
+            {% if post.book-cover %}
+              <img src="{{ site.baseurl }}/img/{{post.book-cover}}" alt="{{post.title}}">
+            {% else %}
+              <img src="{{ site.baseurl }}/img/no-book-cover.png" alt="{{post.title}}">
+            {% endif %}
+        </a>
+    </div>
+    <div class="post-content">
+        <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+        <p>
+            {% if post.summary %}
+                <span class="excerpt">{{ post.summary }}</span>
+            {% else %}
+                <span class="excerpt">{{ post.excerpt | strip_html | truncatewords: 20}}</span>
+            {% endif %}
+        </p>
+        <p class="post-detail">
+            {{ post.date | date: site.date_format }}
+            {% if site.disqus_shortname %}
+              &middot;
+              <a href="{{ site.baseurl }}{{ post.url }}index.html#disqus_thread" data-disqus-identifier="{{ post.url }}"></a>
+              {% if post.update_date %}
+                &middot;
+                Updated {{ post.update_date | date: site.date_format }}
+              {% endif %}
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+
+<script type="text/javascript">
+function switch_nav(fragment) {
+    var elements = document.querySelectorAll("div.archive");
+    for (i = 0; i < elements.length; ++i) {
+        elements[i].classList.add("hide");
+    }
+
+    elements = document.querySelectorAll("div.archive." + fragment);
+    for (i = 0; i < elements.length; ++i) {
+        elements[i].classList.remove("hide");
+    }
+    elements = document.querySelectorAll("nav.pills li");
+    for (i = 0; i < elements.length; ++i) {
+        elements[i].classList.remove("active");
+    }
+    elements = document.querySelectorAll("nav.pills li." + fragment);
+    for (i = 0; i < elements.length; ++i) {
+        elements[i].classList.add("active");
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  var fragment = window.location.hash.slice(1);
+  if (fragment
+      && document.querySelectorAll("div.archive." + fragment).length == 1) {
+    switch_nav(fragment);
+  };
+
+  var elements = document.querySelectorAll("nav.pills a");
+  for (i = 0; i < elements.length; ++i) {
+    elements[i].onclick = function(){
+      var fragment = this.href.split("#")[1];
+      switch_nav(fragment);
+      window.location.replace("#" + fragment);
+      return false;
+    };
+  };
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- Add Disqus comment count (not the comments) -->
+{% if site.disqus_shortname %}
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname  = '{{ site.disqus_shortname }}';
+  // var disqus_developer = 1; // Comment out when the site is live
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+{% endif %}
