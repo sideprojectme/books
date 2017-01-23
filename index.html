@@ -5,13 +5,13 @@ layout: default
 <ul>
 <li>Sort by: </li>
 <li class="by-category"><a href="#by-time">Date</a></li>
-<li class="by-date active"><a href="#by-date">Rating</a></li>
+<li class="by-rating active"><a href="#by-rating">Rating</a></li>
 <li class="by-title"><a href="#by-title">Title</a></li>
 </ul>
 
 </nav>
 
-<div class="by-date archive">
+<div class="by-rating archive">
 
 {% assign sorted_pages = (site.posts | sort: 'rating') %}
 {% for post in sorted_pages reversed %}
