@@ -1,5 +1,5 @@
 # Site wide configuration
-title: Book Note
+title: Reading
 description: 'A book reviewer'
 url: 
 baseurl: /reading
