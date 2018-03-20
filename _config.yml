@@ -2,7 +2,7 @@
 title: 'Munindra Nath'
 description: 'A book reviewer'
 url: 
-baseurl: /reading
+baseurl: /books
 date_format: '%B %d, %Y'
 fort_awesome_icon: 'book'
 
